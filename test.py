@@ -1,41 +1,56 @@
+import cv2
+
+# from resource.emotion_sex_recognition import detect_regorization
+import time
 from statistics import mode
 
 import cv2
 from keras.models import load_model
 import numpy as np
 
-from .utils_base.datasets import get_labels
-from .utils_base.inference import detect_faces
-from .utils_base.inference import draw_text
-from .utils_base.inference import draw_bounding_box
-from .utils_base.inference import apply_offsets
-from .utils_base.inference import load_detection_model
-from .utils_base.preprocessor import preprocess_input
+from resource.utils_base.datasets import get_labels
+from resource.utils_base.inference import detect_faces
+from resource.utils_base.inference import draw_text
+from resource.utils_base.inference import draw_bounding_box
+from resource.utils_base.inference import apply_offsets
+from resource.utils_base.inference import load_detection_model
+from resource.utils_base.preprocessor import preprocess_input
 
 import threading
 from urllib import parse,request
 import time
 
-#这是数据传输模块，没有需要的时候不需要使用
-def swop(emotion,name,sex,age,gl):
-    values={"id":name,"number":emotion}
-    data=parse.urlencode(values)
-    try:
-        url = 'http://127.0.0.1.ngrok.xiaomiqiu.cn/saw_2'
-        req = request.Request(url, data.encode(encoding='utf-8'))
-        print("服务器接入成功，数据成功传输!")
-    except:
-        print("服务器接入失败，数据将临时保存")
+# 加载数据和图像的参数
+detection_model_path = "E:\\biyepractice\EmotionRegorizationFlask\\resource\models\detection_models\haarcascade_frontalface_default.xml"
+emotion_model_path = "E:\\biyepractice\EmotionRegorizationFlask\\resource\models\emotion_models\\fer2013_mini_XCEPTION.110-0.65.hdf5"
+# gender_model_path = "E:\\biyepractice\EmotionRegorizationFlask\\resource\models\gender_models\simple_CNN.81-0.96.hdf5"
+emotion_labels = get_labels('fer2013')
+# gender_labels = get_labels('imdb')
+font = cv2.FONT_HERSHEY_SIMPLEX
 
-#预先打开窗口
+# 定义形状的超参数
+frame_window = 10
+gender_offsets = (30, 60)
+emotion_offsets = (20, 40)
 
+# 加载模型
+face_detection = load_detection_model(detection_model_path)
+emotion_classifier = load_model(emotion_model_path, compile=False)
+# gender_classifier = load_model(gender_model_path, compile=False)
 
-#连接网络摄像头识别
-#video_capture = cv2.VideoCapture(0)
+# 获取用于推理的输入模型形状
+emotion_target_size = emotion_classifier.input_shape[1:3]
+# gender_target_size = gender_classifier.input_shape[1:3]
 
-def detect_regorization(video_capture,face_detection,
-                        emotion_offsets,emotion_target_size,emotion_classifier,
-                        emotion_labels,emotion_window):
+# 计算模式的起始列表
+# gender_window = []
+emotion_window = []
+
+video_capture=cv2.VideoCapture(0)
+# t0 = time.time()
+#image=detect_regorization(video_capture)
+while True:
+    t0 = time.time()
 
     bgr_image = video_capture.read()[1]
 
@@ -132,7 +147,7 @@ def detect_regorization(video_capture,face_detection,
                   color, 0, -45, 1, 1)
         #输出部分数据
         demo="--"+emotion_mode+"--"#+gender_mode
-        #print(demo)
+        print(demo)
         #开启多线程传输数据，默认屏蔽
         #  thread1=threading.Thread(target=swop,args=(emotion_label_arg,j, gender_label_arg, 18, emotion_probability))
         #  thread1.start()
@@ -140,9 +155,14 @@ def detect_regorization(video_capture,face_detection,
     bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
     #bgr_image = cv2.resize(bgr_image, dsize=(1280, 720))
     # cv2.imshow('window_frame', bgr_image)
-    return bgr_image
+    t1 = time.time()
+    print("Total running time: %s s" % (str(t1 - t0)))
 
-    # if cv2.waitKey(1) & 0xFF == ord('q'):
-    #     break
-# video_capture.release()
-# cv2.destroyAllWindows()
+
+# t1 = time.time()
+# print("Total running time: %s s" % (str(t1 - t0)))
+
+
+
+
+video_capture.release()
