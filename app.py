@@ -1,13 +1,6 @@
-import json
-import os
-import time
-
 from flask import Flask, render_template, Response, make_response, request, redirect
 from camera import VideoCamera
 import pymysql
-
-import cv2
-from resource.emotion_sex_recognition import detect_regorization
 
 app = Flask(__name__)
 
@@ -26,7 +19,7 @@ def video_feed():
 
 @app.route('/')
 def hello_world():  # put application's code here
-    return render_template('login.html')
+    return render_template('information.html')
 
 
 @app.route('/verify',methods=['GET', 'POST'])
@@ -42,13 +35,52 @@ def verify():
     connect.close()
     print(result)
     if(result and result[1] == password):
-        return render_template('cur_camer.html')
+        return render_template('information.html')
     else:
         return render_template('login.html')
+
+@app.route('/subm', methods=['GET', 'POST'])
+def subm():
+    name=request.form.get('name')
+    sex=request.form.get('sex')
+    phone=request.form.get('phone')
+    Pno=request.form.get('Pno')
+    Dno=request.form.get('Dno')
+    connect = pymysql.connect(host='localhost', user='root', password='123456', database='emotional_analysis')
+    cursor = connect.cursor()
+    sql = "SELECT * FROM doctor WHERE Dno= '%s'" % Dno
+    cursor.execute(sql)
+    connect.commit()
+    result = cursor.fetchone()
+    if result:
+        cursor = connect.cursor()
+        sql = "SELECT * FROM patient WHERE Pno= '%s'" % Pno
+        cursor.execute(sql)
+        connect.commit()
+        result = cursor.fetchone()
+        if not result:
+            sql = " insert patient(Pno,Pname,Psex,Dno,Phone) values('%s','%s','%s','%s','%s')" % (Pno,name,sex,Dno,phone)
+            cursor.execute(sql)
+            connect.commit()
+        connect.close()
+
+
+
+
 
 @app.route('/cur_camera')
 def cur_camera():
     return render_template('cur_camer.html')
+
+@app.route('/upload_patient_info',methods=['GET', 'POST'])
+def upload_patient_info():
+    name = request.form.get('name')
+    telephone = request.form.get('telephone')
+    sex = request.form.get('sex')
+    print(name,telephone,sex)
+
+    return render_template('information.html')
+
 
 if __name__ == '__main__':
     app.run(host='192.168.0.108',port='5000')

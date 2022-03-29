@@ -2,9 +2,54 @@
 <html>
   <head>
     <title>test</title>
+    <title>个人信息</title>
   </head>
   <body>
     <h1>视频</h1>
     <img id="bg" src="{{ url_for('video_feed') }}">
+
+  <h2 align="center">个人信息表</h2>
+<table style="border: 1px;margin: 0 auto;background: snow" width="30%" cellpadding="5" cellspacing="0" >
+<tr>
+<td>姓名</td>
+<td><input type="text" style="width:95%"></td>
+</tr>
+
+<tr>
+<td>性别</td>
+<td><select style="width: 97%">
+<option>男</option>
+<option>女</option>
+</select></td>
+</tr>
+
+<tr>
+<td>手机号码</td>
+<td><input type="tel" style="width:95%"></td>
+</tr>
+
+<tr>
+<td>病人病号</td>
+<td><input type="text" style="width:95%"></td>
+</tr>
+
+<tr>
+<td>主治医生职工号</td>
+<td><input  type="text" style="width: 95%; " type="text"></td>
+</tr>
+
+<tr>
+<td>病人表情状态</td>
+<td><input style="width: 95%; " type="text"></td>
+</tr>
+
+<tr>
+<td colspan="2" align="right">
+<input type="submit" value="提交">
+<input type="reset" value="退出">
+</td>
+</tr>
+
+</table>
   </body>
 </html>

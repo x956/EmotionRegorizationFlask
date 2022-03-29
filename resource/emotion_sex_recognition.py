@@ -71,7 +71,7 @@ def detect_regorization(video_capture,face_detection,
         emotion_probability = np.max(emotion_prediction)
         emotion_label_arg = np.argmax(emotion_prediction)
 
-        print("表情种类：",emotion_label_arg)
+        #print("表情种类：",emotion_label_arg)
 
         emotion_label_arg = np.argmax(emotion_classifier.predict(gray_face))
         emotion_text = emotion_labels[emotion_label_arg]

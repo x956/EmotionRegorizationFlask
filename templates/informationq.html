@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>情感识别系统平台</title>
+</head>
+<body>
+<div id=page style="margin:auto;padding: 10px 10px;border-style:dashed;height:630px;width:1000px;">
+
+    <div id=header style="margin: 0 atuo;height: 100px;border-style:dashed;text-align:center;">
+        <h1>情感识别系统平台</h1>
+    </div>
+
+        <img id="emotion" style="overflow:hidden;margin: 10px 0;border-style:dashed;height :80%;width:45%;float:left;" src="../static/img/preload.jpg">
+{#        <img id="emotion" src="{{ url_for('video_feed') }}">#}
+    <button onclick="start()">启动系统</button>
+    <button onclick="close()">关闭系统</button>
+
+    <script>
+        function start(){
+            var obj = document.getElementById("emotion")
+            obj.src = "{{ url_for('video_feed') }}"
+        }
+         function close(){
+            var obj = document.getElementById("emotion")
+            obj.src = ""
+        }
+    </script>
+
+
+
+
+
+</div>
+</body>
+</html>
+
+
+

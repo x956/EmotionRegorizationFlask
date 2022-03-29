@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>情感识别系统平台</title>
+</head>
+<body>
+<div id=page style="margin:auto;padding: 10px 10px;border-style:dashed;height:630px;width:1000px;">
+    <div id=header style="margin: 0 atuo;height: 100px;border-style:dashed;text-align:center;">
+        <h1>情感识别系统平台</h1>
+    </div>
+    <div id=search style="overflow:hidden;margin: 10px 0;border-style:dashed;height :80%;width:45%;float:left;">
+        <img id="emotion" src="../static/img/preload.jpg">
+    </div>
+
+    <button onclick="start()">启动系统</button>
+
+    <div id=search2 style="margin: 10px 0;border-style:dashed;height :80%;width:45%;float:right;">
+        <h2 align="center">个人信息表</h2>
+        <form action="subm" method="post" id="submit">
+            <table style="border: 1px;margin: 0 auto;background: write" align="center" width="100%" cellpadding="25"
+               cellspacing="0">
+            <tr>
+                <td>姓名</td>
+                <td><input name="name" type="text" style="width:95%"></td>
+            </tr>
+            <tr>
+                <td>性别</td>
+                <td><select name="sex" style="width: 97%">
+                    <option>男</option>
+                    <option>女</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>手机号码</td>
+                <td><input name="phone" type="tel" style="width:95%"></td>
+            </tr>
+            <tr>
+                <td>病人病号</td>
+                <td><input name="Pno" type="text" style="width:95%"></td>
+            </tr>
+            <tr>
+                <td>主治医生职工号</td>
+                <td><input name="Dno" type="text" style="width: 95%; " type="text"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right">
+                    <button name="information_submit" type="submit">提交</button>
+                </td>
+            </tr>
+        </table>
+        </form>
+    </div>
+
+    <script>
+        function start(){
+            var obj = document.getElementById("emotion")
+            obj.src = "{{ url_for('video_feed') }}"
+        }
+         function close(){
+            var obj = document.getElementById("emotion")
+            obj.src = ""
+        }
+    </script>
+
+</div>
+</body>
+</html>
