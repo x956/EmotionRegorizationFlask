@@ -1,8 +1,14 @@
-from flask import Flask, render_template, Response, make_response, request, redirect
+from flask import Flask, render_template, Response, request
 from camera import VideoCamera
 import pymysql
+import time
+import datetime
+import sys
+sys.path.append(r'E:\\biyepractice\\EmotionRegorizationFlask\\resource')
+import global_var
 
 app = Flask(__name__)
+global_var._init()
 
 #相机推流
 def gen(camera):
@@ -64,9 +70,42 @@ def subm():
             cursor.execute(sql)
             connect.commit()
         connect.close()
-
+    global_var.set_value('name',name)
+    global_var.set_value('Pno', Pno)
     return render_template('informationq.html',name=name,sex=sex,phone=phone,Pno=Pno,Dno=Dno)
 
+
+
+
+@app.route('/puton', methods=['GET', 'POST'])
+def puton():
+    while 1:
+        now_time=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        time.sleep(10)
+        number = global_var.get_value('emotion_label_arg')
+        emo="angry"
+        if number == 0:
+            emo="angry"
+        elif number == 1:
+            emo="disgust"
+        elif number == 2:
+            emo="fear"
+        elif number == 3:
+            emo="happy"
+        elif number == 4:
+            emo="sad"
+        elif number == 5:
+            emo="surprise"
+        elif number == 6:
+            emo="neutral"
+        name = global_var.get_value('name')
+        Pno = global_var.get_value('Pno')
+        connect = pymysql.connect(host='localhost', user='root', password='123456', database='emotional_analysis')
+        cursor = connect.cursor()
+        sql = " insert state(Pno,Pname,State,time) values('%s','%s','%s','%s')" % (Pno, name, emo, now_time)
+        cursor.execute(sql)
+        connect.commit()
+        connect.close()
 
 
 

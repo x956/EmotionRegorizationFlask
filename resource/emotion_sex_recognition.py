@@ -1,20 +1,16 @@
 from statistics import mode
 
 import cv2
-from keras.models import load_model
 import numpy as np
 
-from .utils_base.datasets import get_labels
 from .utils_base.inference import detect_faces
 from .utils_base.inference import draw_text
 from .utils_base.inference import draw_bounding_box
 from .utils_base.inference import apply_offsets
-from .utils_base.inference import load_detection_model
 from .utils_base.preprocessor import preprocess_input
 
-import threading
 from urllib import parse,request
-import time
+import global_var
 
 #这是数据传输模块，没有需要的时候不需要使用
 def swop(emotion,name,sex,age,gl):
@@ -69,7 +65,8 @@ def detect_regorization(video_capture,face_detection,
         emotion_prediction = emotion_classifier.predict(gray_face)
         #寻找可能性最大的表情
         emotion_probability = np.max(emotion_prediction)
-        emotion_label_arg = np.argmax(emotion_prediction)
+        # emotion_label_arg = np.argmax(emotion_prediction)
+        global_var.set_value('emotion_label_arg', np.argmax(emotion_prediction))
 
         #print("表情种类：",emotion_label_arg)
 
