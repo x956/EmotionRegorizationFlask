@@ -19,7 +19,7 @@ def video_feed():
 
 @app.route('/')
 def hello_world():  # put application's code here
-    return render_template('information.html')
+    return render_template('login.html')
 
 
 @app.route('/verify',methods=['GET', 'POST'])
@@ -28,14 +28,15 @@ def verify():
     password=request.form.get('password')
     connect=pymysql.connect('localhost','root','123456','emotional_analysis')
     cursor = connect.cursor()
-    sql = "SELECT * FROM doc_account WHERE Daccount= '%s'" % username
+    sql = "SELECT * FROM doctor WHERE Daccount= '%s'" % username
     cursor.execute(sql)
     result = cursor.fetchone()
     connect.commit()
     connect.close()
+    Dno = result[0]
     print(result)
-    if(result and result[1] == password):
-        return render_template('information.html')
+    if(result and result[2] == password):
+        return render_template('information.html',Dno = Dno)
     else:
         return render_template('login.html')
 
@@ -64,6 +65,7 @@ def subm():
             connect.commit()
         connect.close()
 
+    return render_template('informationq.html',name=name,sex=sex,phone=phone,Pno=Pno,Dno=Dno)
 
 
 

@@ -10,13 +10,11 @@
         <h1>情感识别系统平台</h1>
     </div>
     <div id=search style="overflow:hidden;margin: 10px 0;border-style:dashed;height :80%;width:45%;float:left;">
-        <img id="emotion" src="../static/img/preload.jpg">
+        <img id="emotion" src="../static/img/preload.jpg" style="width: 100%;height: 100%">
     </div>
 
-    <button onclick="start()">启动系统</button>
-
     <div id=search2 style="margin: 10px 0;border-style:dashed;height :80%;width:45%;float:right;">
-        <h2 align="center">个人信息表</h2>
+        <h2 align="center">病人信息表</h2>
         <form action="subm" method="post" id="submit">
             <table style="border: 1px;margin: 0 auto;background: write" align="center" width="100%" cellpadding="25"
                cellspacing="0">
@@ -41,27 +39,18 @@
             </tr>
             <tr>
                 <td>主治医生职工号</td>
-                <td><input name="Dno" type="text" style="width: 95%; " type="text"></td>
+                <td><input name="Dno" type="text" style="width: 95%; cursor:not-allowed" type="text" value="{{ Dno }}"></td>
             </tr>
             <tr>
                 <td colspan="2" align="right">
-                    <button name="information_submit" type="submit">提交</button>
+                    <button name="information_submit" style="width:102px;height:30px;"  type="submit">提交</button>
                 </td>
             </tr>
         </table>
         </form>
+
     </div>
 
-    <script>
-        function start(){
-            var obj = document.getElementById("emotion")
-            obj.src = "{{ url_for('video_feed') }}"
-        }
-         function close(){
-            var obj = document.getElementById("emotion")
-            obj.src = ""
-        }
-    </script>
 
 </div>
 </body>
