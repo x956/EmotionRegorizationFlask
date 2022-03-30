@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, request
+from flask import Flask, render_template, Response, request, make_response
 from camera import VideoCamera
 import pymysql
 import time
@@ -6,6 +6,8 @@ import datetime
 import sys
 sys.path.append(r'E:\\biyepractice\\EmotionRegorizationFlask\\resource')
 import global_var
+from io import BytesIO
+import xlsxwriter
 
 app = Flask(__name__)
 global_var._init()
@@ -21,6 +23,33 @@ def gen(camera):
 def video_feed():
     return Response(gen(VideoCamera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+def create_workbook(Pno):
+    connect=pymysql.connect('localhost','root','123456','emotional_analysis')
+    cursor = connect.cursor()
+    sql= "SELECT * FROM state where Pno= "+str(Pno)
+    cursor.execute(sql)
+    cursor.scroll(0,mode="absolute")
+    results=cursor.fetchall()
+    fields = cursor.description
+    title = []
+    for field in range(0, len(fields)):
+        title.append(fields[field][0])
+    output = BytesIO()
+    # 创建Excel文件,不保存,直接输出
+    workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+    # 设置Sheet的名字为download
+    worksheet = workbook.add_worksheet(str(Pno)+'病人数据')
+    # 列首
+    worksheet.write_row('A1', title)
+    for i in range(len(results)):
+        row = [str(results[i][0]),str(results[i][1]),str(results[i][2]),str(results[i][3])]
+        worksheet.write_row('A' + str(i + 2), row)
+    workbook.close()
+    response = make_response(output.getvalue())
+    output.close()
+    return response
 
 
 @app.route('/')
@@ -75,8 +104,6 @@ def subm():
     return render_template('informationq.html',name=name,sex=sex,phone=phone,Pno=Pno,Dno=Dno)
 
 
-
-
 @app.route('/puton', methods=['GET', 'POST'])
 def puton():
     while 1:
@@ -108,20 +135,22 @@ def puton():
         connect.close()
 
 
-
-@app.route('/cur_camera')
-def cur_camera():
-    return render_template('cur_camer.html')
-
 @app.route('/upload_patient_info',methods=['GET', 'POST'])
 def upload_patient_info():
     name = request.form.get('name')
     telephone = request.form.get('telephone')
     sex = request.form.get('sex')
     print(name,telephone,sex)
-
     return render_template('information.html')
 
+
+@app.route('/download/<Pno>', methods=['GET'])
+def download(Pno):
+    response = create_workbook(Pno)
+    response.headers['Content-Type'] = "utf-8"
+    response.headers["Cache-Control"] = "no-cache"
+    response.headers["Content-Disposition"] = "attachment; filename="+str(Pno)+"--state"+".xlsx"
+    return response
 
 if __name__ == '__main__':
     app.run(host='192.168.0.108',port='5000')

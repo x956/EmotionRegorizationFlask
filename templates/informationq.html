@@ -32,7 +32,7 @@
             </tr>
             <tr>
                 <td>病人病号</td>
-                <td>{{ Pno }}</td>
+                <td><p id="pno">{{ Pno }}</p></td>
             </tr>
             <tr>
                 <td>主治医生职工号</td>
@@ -43,6 +43,7 @@
                     <form action="puton" method="post" id="puton">
                         <button style="width:102px;height:30px"  onclick="start()">启动系统</button>
                         <button style="width:102px;height:30px" onclick="close_sys()">关闭系统</button>
+                        <a href="{{url_for('download',Pno = Pno)}}">导出数据</a>
                     </form>
                 </td>
                 </tr>
