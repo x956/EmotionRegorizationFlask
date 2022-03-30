@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>情感识别系统平台</title>
+        <style>
+           body {
+      background: url('https://img.tukuppt.com/bg_grid/00/03/38/nmWTWffRGG.jpg!/fh/350') no-repeat;
+      background-size: 100% 130%;
+    }</style>
+
 </head>
 <body>
 <div id=page style="margin:auto;padding: 10px 10px;border-style:dashed;height:630px;width:1000px;">
@@ -16,7 +22,7 @@
 
     <div id=search2 style="margin: 10px 0;border-style:dashed;height :80%;width:45%;float:right;">
         <h2 align="center">病人信息表</h2>
-            <table style="border: 1px;margin: 0 auto;background: write" align="center" width="100%" cellpadding="25"
+            <table style="border: 1px;margin: 0 auto;background: write" align="center" width="100%" cellpadding="21"
                cellspacing="0">
             <tr>
                 <td>姓名</td>
@@ -43,6 +49,7 @@
                     <form action="puton" method="post" id="puton">
                         <button style="width:102px;height:30px"  onclick="start()">启动系统</button>
                         <button style="width:102px;height:30px" onclick="close_sys()">关闭系统</button>
+                        <br>
                         <a href="{{url_for('download',Pno = Pno)}}">导出数据</a>
                     </form>
                 </td>
