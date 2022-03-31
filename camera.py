@@ -25,8 +25,8 @@ class VideoCamera(object):
         # instead.
         self.video = cv2.VideoCapture(0)
         # 加载数据和图像的参数
-        detection_model_path = "E:\\biyepractice\EmotionRegorizationFlask\\resource\models\detection_models\haarcascade_frontalface_default.xml"
-        emotion_model_path = "E:\\biyepractice\EmotionRegorizationFlask\\resource\models\emotion_models\\fer2013_mini_XCEPTION.110-0.65.hdf5"
+        detection_model_path = "E:\\PyCharm Community Edition 2020.2.3\\EmotionRegorizationFlask\\resource\models\detection_models\haarcascade_frontalface_default.xml"
+        emotion_model_path = "E:\\PyCharm Community Edition 2020.2.3\\EmotionRegorizationFlask\\resource\models\emotion_models\\fer2013_mini_XCEPTION.110-0.65.hdf5"
         # gender_model_path = "E:\\biyepractice\EmotionRegorizationFlask\\resource\models\gender_models\simple_CNN.81-0.96.hdf5"
         self.emotion_labels = get_labels('fer2013')
         # gender_labels = get_labels('imdb')

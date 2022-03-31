@@ -4,7 +4,7 @@ import pymysql
 import time
 import datetime
 import sys
-sys.path.append(r'E:\\biyepractice\\EmotionRegorizationFlask\\resource')
+sys.path.append(r'E:\\PyCharm Community Edition 2020.2.3\\EmotionRegorizationFlask\\resource')
 import global_var
 from io import BytesIO
 import xlsxwriter
@@ -26,7 +26,7 @@ def video_feed():
 
 
 def create_workbook(Pno):
-    connect=pymysql.connect('localhost','root','123456','emotional_analysis')
+    connect=pymysql.connect(host='localhost', user='root', password='111111', database='emotional_analysis')
     cursor = connect.cursor()
     sql= "SELECT * FROM state where Pno= "+str(Pno)
     cursor.execute(sql)
@@ -61,7 +61,7 @@ def hello_world():  # put application's code here
 def verify():
     username=request.form.get('username')
     password=request.form.get('password')
-    connect=pymysql.connect('localhost','root','123456','emotional_analysis')
+    connect=pymysql.connect(host='localhost', user='root', password='111111', database='emotional_analysis')
     cursor = connect.cursor()
     sql = "SELECT * FROM doctor WHERE Daccount= '%s'" % username
     cursor.execute(sql)
@@ -82,7 +82,7 @@ def subm():
     phone=request.form.get('phone')
     Pno=request.form.get('Pno')
     Dno=request.form.get('Dno')
-    connect = pymysql.connect(host='localhost', user='root', password='123456', database='emotional_analysis')
+    connect = pymysql.connect(host='localhost', user='root', password='111111', database='emotional_analysis')
     cursor = connect.cursor()
     sql = "SELECT * FROM doctor WHERE Dno= '%s'" % Dno
     cursor.execute(sql)
@@ -127,7 +127,7 @@ def puton():
             emo="neutral"
         name = global_var.get_value('name')
         Pno = global_var.get_value('Pno')
-        connect = pymysql.connect(host='localhost', user='root', password='123456', database='emotional_analysis')
+        connect = pymysql.connect(host='localhost', user='root', password='111111', database='emotional_analysis')
         cursor = connect.cursor()
         sql = " insert state(Pno,Pname,State,time) values('%s','%s','%s','%s')" % (Pno, name, emo, now_time)
         cursor.execute(sql)
@@ -153,4 +153,4 @@ def download(Pno):
     return response
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.108',port='5000')
+    app.run(host='0.0.0.0',port='5000')
